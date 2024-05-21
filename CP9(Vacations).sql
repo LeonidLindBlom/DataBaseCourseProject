@@ -21,3 +21,11 @@ check("EndDate" similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2
 alter table "Vacations" 
 add constraint "CH_Vacations_ID"
 check("ID">0);
+
+alter table "Vacations" 
+add column "StaffID" int;
+
+alter table "Vacations" 
+add constraint "FK_Staff_Vacations"
+foreign key ("StaffID")
+references "Staff"("ID")
