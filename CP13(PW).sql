@@ -29,3 +29,11 @@ check("Start" similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})
 alter table "PreviousWorks"  
 add constraint "CH_End"
 check("End" similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})|([2][0]\d{2}))$');
+
+alter table "PreviousWorks" 
+add column "StaffID" int;
+
+alter table "PreviousWorks" 
+add constraint "FK_Staff_PreviousWorks"
+foreign key("StaffID")
+references "Staff"("ID");
