@@ -58,3 +58,20 @@ alter table "Staff"
 alter column "Sex"
 set not null
 
+alter table "Staff" 
+drop constraint "FK_Vacations_Staff";
+
+alter table "Staff" 
+drop column "VacationID";
+
+alter table "Staff" 
+drop constraint "FK_Children_Staff";
+
+alter table "Staff" 
+drop column "ChildID";
+
+alter table "Staff" 
+drop constraint "FK_PreviousWorks_Staff";
+
+alter table "Staff" 
+drop column "PreviousWorkID";
