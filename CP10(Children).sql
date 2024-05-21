@@ -28,3 +28,11 @@ check("BirthDay" similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{
 alter table "Children"  
 add constraint "CH_Children_ID"
 check("ID">0);
+
+alter table "Children" 
+add column "StaffID" int;
+
+alter table "Children" 
+add constraint "FK_Staff_Children"
+foreign key ("StaffID")
+references "Staff"("ID");
