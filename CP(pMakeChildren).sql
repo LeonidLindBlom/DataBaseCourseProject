@@ -1,12 +1,12 @@
 drop procedure "pMakeChildren"
 
 create procedure "pMakeChildren"(
-	in name varchar(15)
-  , in surname varchar(25)
+	in surname varchar(25)
+  , in name varchar(15)
   , in patronymic varchar(25)
   , in birthday date
-  , in parent_name varchar(15)
   , in parent_surname varchar(25)
+  , in parent_name varchar(15)
   , in parent_patronimic varchar(25)
 )
 language plpgsql
@@ -68,5 +68,7 @@ end;
 $$
 
 call "pMakeChildren"('Табуретка', 'Афанасий', 'Сергеевич', '2015-12-31', 'Табуретка', 'Сергей', 'Петрович')
+
+delete from "Children" c 
 
 select * from "Children" c 

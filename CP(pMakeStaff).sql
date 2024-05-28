@@ -1,8 +1,8 @@
 drop procedure "pMakeStaff"
 
 create procedure "pMakeStaff"(
-	in name varchar(15)
-  , in surname varchar(25)
+	in surname varchar(25)
+  , in name varchar(15)
   , in patronymic varchar(25)
   , in birthday date
   , in sex varchar(1)
@@ -77,5 +77,6 @@ call "pMakeStaff"('Бибкина', 'Анна', 'Федоровна', '1999-04-1
 
 call "pMakeStaff"('Табуретка', 'Сергей', 'Петрович', '1988-10-22', 'М', 'Уборщик', 1)
 
+delete from "Staff" 
 
 select * from "Staff" s 

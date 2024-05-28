@@ -7,8 +7,8 @@ create function "fGetStaffID"(
 	$$
 		select s."ID"
 		from "Staff" s 
-		where s."Name" = "name" 
-			and s."Surname" = "surname"
+		where s."Surname" = "surname"
+			and s."Name" = "name"
 			and s."Patronymic" = "patronymic";
 	$$ language sql;
 

@@ -1,8 +1,10 @@
+drop procedure "pMakeVacation"
+
 create procedure "pMakeVacation"(
-    in start_date varchar(10)
-  , in end_date varchar(10)
-  , in staff_name varchar(15)
+    in start_date date
+  , in end_date date
   , in staff_surname varchar(25)
+  , in staff_name varchar(15)
   , in staff_patronimic varchar(25)
   , in maternity varchar(3)
 )
@@ -12,19 +14,9 @@ declare
 	id integer;
 	id_staff integer;
 begin 
-	if maternity not similar to '^((Да)|(Нет))$'
+	if maternity not similar to '^Да|Нет'
 	then 
 		raise exception 'Неправильный формат статуса отпуска по уходу за ребенком';
-	end if;
-
-	if start_date not similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})|([2][0]\d{2}))$'
-	then 
-		raise exception 'Неправильный формат даты';
-	end if;
-
-	if end_date not similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})|([2][0]\d{2}))$'
-	then 
-		raise exception 'Неправильный формат даты';
 	end if;
 
 	if staff_name is null or staff_name = ''
@@ -37,7 +29,7 @@ begin
 			raise exception 'Неправильная фамилия сотрудника';
 		end if;
 	
-	if staff_patronymic is null or staff_patronymic = ''
+	if staff_patronimic is null or staff_patronimic = ''
 	then 
 		raise exception 'Неправильное отчество сотрудника';
 	end if;
@@ -45,16 +37,22 @@ begin
 	select * into id from public."fGetNextVacationID"();
 	
 	select * 
-	into id_staff from public."fGetStaffID"(staff_name, staff_surname, staff_patronymic);
+	into id_staff from public."fGetStaffID"(staff_surname, staff_name, staff_patronimic);
 	
 	if id_staff is null
 	then 
-		raise exception 'Не найден сотрудник %', staff;
+		raise exception 'Не найден сотрудник';
 	end if;
 
-	insert into "Vacations" ("ID", "StartDate", "EndDate", "Maternity", "StaffID")
+	insert into "Vacations" ("ID", "Start", "End", "Maternity", "StaffID")
 	values  (id, start_date, end_date, maternity, id_staff);
 
 	raise notice 'Добавлены новые данные об отпуске';
 end;
 $$
+
+call "pMakeVacation"('2024-05-28','2024-06-28', 'Иванов', 'Иван', 'Иванович', 'Нет' )
+
+call "pMakeVacation"('2024-06-28','2024-07-28', 'Табуретка', 'Сергей', 'Петрович', 'Нет' )
+
+select * from "Vacations" v 
