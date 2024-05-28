@@ -75,3 +75,12 @@ drop constraint "FK_PreviousWorks_Staff";
 
 alter table "Staff" 
 drop column "PreviousWorkID";
+
+alter table "Staff" 
+drop constraint "CH_BirthDay";
+
+alter table "Staff" 
+drop column "BirthDay"
+
+alter table "Staff" 
+add column "BirthDay" date
