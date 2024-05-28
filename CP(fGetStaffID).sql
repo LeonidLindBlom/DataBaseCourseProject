@@ -1,6 +1,6 @@
 create function "fGetStaffID"(
-	"name" varchar(15)
-  , "surname" varchar(20)
+	"surname" varchar(20)
+  , "name" varchar(15)
   , "patronymic" varchar(20)
 	)
 	returns integer as
@@ -11,3 +11,5 @@ create function "fGetStaffID"(
 			and s."Surname" = "surname"
 			and s."Patronymic" = "patronymic";
 	$$ language sql;
+
+drop function "fGetStaffID"

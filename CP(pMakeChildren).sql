@@ -1,8 +1,10 @@
+drop procedure "pMakeChildren"
+
 create procedure "pMakeChildren"(
 	in name varchar(15)
   , in surname varchar(25)
   , in patronymic varchar(25)
-  , in birthday varchar (10)
+  , in birthday date
   , in parent_name varchar(15)
   , in parent_surname varchar(25)
   , in parent_patronimic varchar(25)
@@ -28,7 +30,7 @@ begin
 		raise exception 'Неправильное отчество ребенка';
 	end if;
 
-	if birthday not similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})|([2][0]\d{2}))$'
+	if birthday > now()
 	then 
 		raise exception 'Неправильный формат даты';
 	end if;
@@ -43,7 +45,7 @@ begin
 			raise exception 'Неправильная фамилия сотрудника';
 		end if;
 	
-	if parent_patronymic is null or parent_patronymic = ''
+	if parent_patronimic is null or parent_patronimic = ''
 	then 
 		raise exception 'Неправильное отчество сотрудника';
 	end if;
@@ -51,16 +53,20 @@ begin
 	select * into id from public."fGetNextChildrenID"();
 	
 	select * 
-	into id_staff from public."fGetStaffID"(parent_name, parent_surname, parent_patronymic);
+	into id_staff from public."fGetStaffID"(parent_surname, parent_name, parent_patronimic);
 	
 	if id_staff is null
 	then 
-		raise exception 'Не найден сотрудник %', staff;
+		raise exception 'Не найден сотрудник';
 	end if;
 
-	insert into "Children"("ID", "Name", "Surname", "BirthDay", "Patronymic","StaffID")
-	values  (id, name, surname, birthday, patronymic, id_staff );
+	insert into "Children"("ID", "Surname", "Name", "BirthDay", "Patronymic","StaffID")
+	values  (id, surname, name, birthday, patronymic, id_staff );
 
 	raise notice 'Добавлен новый ребенок';
 end;
 $$
+
+call "pMakeChildren"('Табуретка', 'Афанасий', 'Сергеевич', '2015-12-31', 'Табуретка', 'Сергей', 'Петрович')
+
+select * from "Children" c 

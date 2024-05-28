@@ -1,8 +1,10 @@
+drop procedure "pMakeStaff"
+
 create procedure "pMakeStaff"(
 	in name varchar(15)
   , in surname varchar(25)
   , in patronymic varchar(25)
-  , in birthday varchar (10)
+  , in birthday date
   , in sex varchar(1)
   , in post varchar(20)
   , in disability_group integer
@@ -34,12 +36,12 @@ begin
 		raise exception 'Неправильная должность сотрудника';
 	end if;
 
-	if birthday not similar to '^(([0-2][0-9])|([3][0-1])).([0-1][0-9]).(([1][9]\d{2})|([2][0]\d{2}))$'
+	if birthday = now()
 	then 
 		raise exception 'Неправильный формат даты';
 	end if;
 
-	if sex not similar to '^((М)|(Ж))$'
+	if sex not similar to 'М|Ж'
 	then 
 		raise exception 'Неправильный формат пола';
 	end if;
@@ -62,12 +64,18 @@ begin
 	select * 
 	into id_disability from public."fGetDisabilityID"(disability_group);
 
-	insert into "Staff"("ID", "Name", "Surname", "Patronymic", "BirthDay", "DisabilityID", "PostID", "Sex")
-	values (id, name, surname, patronymic, birthday, id_disability, id_post, sex);
+	insert into "Staff"("ID", "Surname", "Name", "Patronymic", "BirthDay", "DisabilityID", "PostID", "Sex")
+	values (id, surname, name, patronymic, birthday, id_disability, id_post, sex);
 
 	raise notice 'Добавлен новый сотрудник';
 end;
 $$
 
-	
+call "pMakeStaff"('Иванов', 'Иван', 'Иванович', '2002-03-07', 'М', 'Аналитик', 0)
 
+call "pMakeStaff"('Бибкина', 'Анна', 'Федоровна', '1999-04-15', 'Ж', 'Разработчик', 0)
+
+call "pMakeStaff"('Табуретка', 'Сергей', 'Петрович', '1988-10-22', 'М', 'Уборщик', 1)
+
+
+select * from "Staff" s 
