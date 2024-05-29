@@ -37,3 +37,21 @@ alter table "PreviousWorks"
 add constraint "FK_Staff_PreviousWorks"
 foreign key("StaffID")
 references "Staff"("ID");
+
+alter table "PreviousWorks" 
+drop constraint "CH_Start"
+
+alter table "PreviousWorks" 
+drop constraint "CH_End"
+
+alter table "PreviousWorks" 
+drop column "Start"
+
+alter table "PreviousWorks" 
+drop column "End"
+
+alter table "PreviousWorks" 
+add column "Start" date
+
+alter table "PreviousWorks" 
+add column "End" date

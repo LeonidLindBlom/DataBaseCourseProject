@@ -29,3 +29,21 @@ alter table "Vacations"
 add constraint "FK_Staff_Vacations"
 foreign key ("StaffID")
 references "Staff"("ID")
+
+alter table "Vacations"  
+drop constraint "CH_StartDate"
+
+alter table "Vacations"  
+drop constraint "CH_EndDate"
+
+alter table "Vacations"  
+drop column "StartDate"
+
+alter table "Vacations"  
+drop column "EndDate"
+
+alter table "Vacations"  
+add column "Start" date
+
+alter table "Vacations"  
+add column "End" date

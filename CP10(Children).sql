@@ -36,3 +36,12 @@ alter table "Children"
 add constraint "FK_Staff_Children"
 foreign key ("StaffID")
 references "Staff"("ID");
+
+alter table "Children" 
+drop constraint "CH_BirthDay"
+
+alter table "Children" 
+drop column "BirthDay"
+
+alter table "Children" 
+add column "BirthDay" date
